@@ -1,0 +1,8 @@
+coinbase
+fastapi
+uvicorn
+aioredis
+aiohttp
+ujson
+pydantic
+pyyaml
