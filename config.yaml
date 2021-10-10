@@ -1,0 +1,21 @@
+app:
+  host: !!env APP_HOST, 0.0.0.0
+  port: !!env APP_PORT, 8000
+
+cache:
+  redis:
+    enabled: !!env CACHE_REDIS_ENABLE, false
+    uri: !!env CACHE_REDIS_URI, "redis://localhost:6379"
+
+  memory:
+    enabled: !!env CACHE_MEMORY_ENABLE, false
+    uri: !!env CACHE_MEMORY_URI, "mem://?check_interval=10&size=512"
+
+  long_term_ttl: !!env LONG_TERM_CACHE_TTL, 86400
+  ttl: !!env CACHE_TTL, 600
+
+coinbase:
+  base_api_url: "https://api.coinbase.com/v2/"
+  currencies_api_path: "currencies"
+  spot_api_path: "prices/spot?currency={currency}"
+

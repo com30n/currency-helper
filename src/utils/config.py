@@ -16,7 +16,7 @@ class FileNotFound(Exception):
 
 
 def get_config_path():
-    config_default_search_paths = ['./config.yml', './configs/config.yml']
+    config_default_search_paths = ['./config.yaml', './configs/config.yaml']
     config_path = os.environ.get('CONFIG')
     if not config_path:
         for p in config_default_search_paths:
@@ -36,12 +36,12 @@ def load_config(config_path: Optional[str] = None) -> dict:
                            'Please provide config by setting "CONFIG" env var '
                            'or by passing it to `init_app` explicitly')
 
-    return load_conf(config_path)
+    return _load_config(config_path)
 
 
-def load_conf(path: str) -> dict:
+def _load_config(path: str) -> dict:
     loader_cls = SafeLoader
-    add_env_constructor(loader_cls)
+    _add_env_constructor(loader_cls)
     try:
         with open(path, 'r') as yaml_file:
             config = yaml.load(yaml_file.read(), Loader=loader_cls)
@@ -50,7 +50,7 @@ def load_conf(path: str) -> dict:
     return config
 
 
-def add_env_constructor(loader_cls):
+def _add_env_constructor(loader_cls):
     def from_env(parts):
         if len(parts) == 1:
             return os.environ[parts[0]]
