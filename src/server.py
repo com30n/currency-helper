@@ -1,12 +1,10 @@
-from urllib.parse import urljoin
-
 from fastapi import FastAPI
-from starlette_context import context
 from starlette_context.middleware import ContextMiddleware
 from starlette_prometheus import PrometheusMiddleware, metrics
 
 import api
 from src.api.v1.currencies import load_and_cache_currencies_list
+from src.utils.ping import ping
 from strategies import setup_cache_client
 
 
@@ -22,8 +20,9 @@ def get_app(config):
     setup_cache_client(app, config)
     setup_config(app, config)
 
-
     app.add_route("/-/metrics", metrics)
+    app.add_route("/-/ping", ping, )
+    app.add_route("/health", ping)
     app.include_router(api.v1.router, prefix="/api/v1")
     app.include_router(api.v1.router)
 
