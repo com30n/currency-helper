@@ -1,8 +1,11 @@
 coinbase
 fastapi
 uvicorn
-aioredis
+aioredis == 1.3.1
 aiohttp
 ujson
 pydantic
 pyyaml
+cashews
+starlette
+starlette_prometheus
