@@ -3,10 +3,9 @@ name: Publish on Docker Hub and Deploy
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-
   build_and_pub:
     runs-on: [ubuntu-latest]
     env:
