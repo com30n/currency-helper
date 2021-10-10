@@ -23,6 +23,7 @@ def get_app(config):
     app.add_route("/-/metrics", metrics)
     app.add_route("/-/ping", ping, )
     app.add_route("/health", ping)
+    app.add_route("/metrics", metrics)
     app.include_router(api.v1.router, prefix="/api/v1")
     app.include_router(api.v1.router)
 
