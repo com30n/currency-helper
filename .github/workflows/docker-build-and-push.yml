@@ -12,12 +12,17 @@ jobs:
       LOGIN: ${{ secrets.DOCKER_LOGIN }}
       NAME: ${{ secrets.DOCKER_NAME }}
     steps:
-      - name: Login to docker.io
-        run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
-      - uses: actions/checkout@master
-      - name: Build image
-        run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -t $LOGIN/$NAME:currency-helper-latest -f Dockerfile .
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_LOGIN }}
+          password: ${{ secrets.DOCKER_NAME }}
+
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: $LOGIN/$NAME:currency-helper-latest
+
       - name: Run tests
-        run: docker run -i --rm $LOGIN/$NAME:${GITHUB_REF:11} pytest
-      - name: Push image to docker.io
-        run: docker push $LOGIN/$NAME:${GITHUB_REF:11} && docker push $LOGIN/$NAME:currency-helper-latest
+        run: docker run -i --rm $LOGIN/$NAME:currency-helper-latest pytest
