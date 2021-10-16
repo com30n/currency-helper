@@ -29,7 +29,7 @@ class CoinbaseClientMock(CoinbaseClient):
 
 @pytest.fixture(scope="function")
 def app() -> FastAPI:
-    os.environ["CONFIG"] = "../../config.yaml"
+    os.environ["CONFIG"] = "./config.yaml"
 
     config_path = get_config_path()
     config = load_config(config_path)

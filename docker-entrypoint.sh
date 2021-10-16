@@ -10,7 +10,7 @@ case "${1}" in
     "pytest")
         shift
         echo "Tests"
-        exec pytest ${@}
+        exec python -m pytest .
         ;;
 
     "help")
