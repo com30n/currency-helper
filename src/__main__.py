@@ -1,6 +1,6 @@
 from uvicorn import run
 
-from server import get_app
+from src.server import get_app
 from src.utils.config import get_config_path, load_config
 
 

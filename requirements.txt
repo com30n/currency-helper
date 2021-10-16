@@ -9,3 +9,5 @@ pyyaml
 cashews
 starlette
 starlette_prometheus
+black
+isort

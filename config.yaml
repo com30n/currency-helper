@@ -3,12 +3,13 @@ app:
   port: !!env APP_PORT, 8000
 
 cache:
+  # TODO: needs to find why is the lib doesn't work
   redis:
     enabled: !!env CACHE_REDIS_ENABLE, false
-    uri: !!env CACHE_REDIS_URI, "redis://localhost:6379"
+    uri: !!env CACHE_REDIS_URI, "redis://localhost:6379/?db=0&safe=false"
 
   memory:
-    enabled: !!env CACHE_MEMORY_ENABLE, false
+    enabled: !!env CACHE_MEMORY_ENABLE, true
     uri: !!env CACHE_MEMORY_URI, "mem://?check_interval=10&size=512"
 
   long_term_ttl: !!env LONG_TERM_CACHE_TTL, 86400
@@ -18,4 +19,3 @@ coinbase:
   base_api_url: "https://api.coinbase.com/v2/"
   currencies_api_path: "currencies"
   spot_api_path: "prices/spot?currency={currency}"
-

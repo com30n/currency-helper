@@ -1,4 +1,4 @@
-from fastapi import status, Response
+from fastapi import Response, status
 
 
 def ping(response: Response):
