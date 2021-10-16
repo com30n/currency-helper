@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build_and_pub:
+  build_test_and_pub:
     runs-on: [ubuntu-latest]
     env:
       LOGIN: ${{ secrets.DOCKER_LOGIN }}
@@ -17,5 +17,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Build image
         run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -t $LOGIN/$NAME:currency-helper-latest -f Dockerfile .
+      - name: Run tests
+        run: docker run -ti --rm $LOGIN/$NAME:${GITHUB_REF:11} pytest
       - name: Push image to docker.io
         run: docker push $LOGIN/$NAME:${GITHUB_REF:11} && docker push $LOGIN/$NAME:currency-helper-latest
