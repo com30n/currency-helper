@@ -30,6 +30,9 @@ app:
   ## Port name for probes and service
   containerPortName: api-port
 
+  ## Prefix for private urls such as /ping, /health, etc
+  prefixURL: "/-"
+
   ingress:
     ## If true, api Ingress will be created
     ##
@@ -73,10 +76,10 @@ app:
   ##
   resources:
     limits:
-      cpu: 100m
+      cpu: 10m
       memory: 100Mi
     requests:
-      cpu: 100m
+      cpu: 10m
       memory: 100Mi
 
   ## Horizontal Pod Autoscaler settings
