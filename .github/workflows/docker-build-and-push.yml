@@ -47,6 +47,7 @@ jobs:
           tags: |
             ${{ env.IMAGE }}:currency-helper-latest
 
+      - uses: actions/checkout@v1
       - name: Prep helm chart
         run: |
           mv ./.helm/Chart.yaml ./.helm/Chart.old.yaml &&
