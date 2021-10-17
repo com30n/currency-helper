@@ -30,8 +30,8 @@ class CoinbaseClient:
             return await resp.json()
 
     async def load_and_cache_currencies_list(
-            self,
-            ctx: Request,
+        self,
+        ctx: Request,
     ) -> CurrenciesModel:
         coinbase_get_currencies_api_uri = urljoin(
             self.config["coinbase"]["base_api_url"],
@@ -52,7 +52,7 @@ class CoinbaseClient:
         return currencies_model
 
     async def load_and_cache_spot_price(
-            self, ctx: Request, currency: str = "USD"
+        self, ctx: Request, currency: str = "USD"
     ) -> Optional[SpotPricesModel]:
         coinbase_spot_api_uri = urljoin(
             self.config["coinbase"]["base_api_url"],
