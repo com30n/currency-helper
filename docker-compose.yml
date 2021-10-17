@@ -20,6 +20,25 @@ services:
         source: ./src
         target: /app/src
 
+  tests:
+    build:
+      dockerfile: Dockerfile
+      context: '.'
+    image: get-currency-api:latest
+    environment:
+      CACHE_REDIS_ENABLE: "false"
+      CACHE_REDIS_URI: redis://redis:6379/0
+      APP_PORT: 8080
+
+    ports:
+      - "8080:8080"
+    command:
+      - pytest
+    volumes:
+      - type: bind
+        source: ./
+        target: /app/
+
   redis:
     image: redis
     ports:

@@ -23,6 +23,6 @@ async def get_currency(
         request: Request,
 ) -> Union[CurrenciesModel, JSONResponse]:
     try:
-        return request.app.coinbase_client.load_and_cache_currencies_list(ctx=request)
+        return await request.app.coinbase_client.load_and_cache_currencies_list(ctx=request)
     except (ValidationError, TypeError):
         return JSONResponse(status_code=500, content={"message": "Coinbase returns unexpected answer"})
