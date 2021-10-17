@@ -1,5 +1,3 @@
-from functools import partial
-
 from . import memory_cache, no_cache, redis_cache
 
 

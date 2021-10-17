@@ -1,4 +1,5 @@
 import pytest
+from httpx import AsyncClient
 
 from src.models import CurrenciesModel
 from src.tests.fixtures import app
@@ -23,16 +24,11 @@ async def test_currencies(app):
     app.coinbase_client._get = mocked_resp
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
-        response = await ac.get(f"/api/v1/currencies")
+        response = await ac.get("/api/v1/currencies")
 
     assert response.status_code == 200
     assert response.json() == MOCK_PROFILE_DICT
 
-
-import pytest
-from httpx import AsyncClient
-
-from src.tests.fixtures import app
 
 app = app  # Imports optimizer fix
 
@@ -69,7 +65,6 @@ async def test_currency(app, requested: str, expected: dict) -> None:
 
     app.coinbase_client.load_and_cache_currencies_list = mocked_currencies
     for i in range(len(requested)):
-
         async def mocked_resp(*args, **kwargs):
             return expected[i][-1]
 
@@ -78,6 +73,5 @@ async def test_currency(app, requested: str, expected: dict) -> None:
         async with AsyncClient(app=app, base_url="http://test") as ac:
             response = await ac.get(f"/{requested[i]}")
 
-        j = response.json()
         assert response.status_code == expected[i][0]
         assert response.json() == expected[i][1]
