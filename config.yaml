@@ -1,6 +1,6 @@
 app:
   host: !!env APP_HOST, 0.0.0.0
-  port: !!env APP_PORT, 8000
+  port: !!env APP_PORT, 8080
 
 cache:
   # TODO: needs to find why is the lib doesn't work
