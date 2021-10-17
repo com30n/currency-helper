@@ -3,7 +3,7 @@ app:
   port: !!env APP_PORT, 8080
 
 cache:
-  # TODO: needs to find why is the lib doesn't work
+  # TODO: needs to find out why is the cache lib doesn't work with redis
   redis:
     enabled: !!env CACHE_REDIS_ENABLE, false
     uri: !!env CACHE_REDIS_URI, "redis://localhost:6379/?db=0&safe=false"
