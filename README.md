@@ -18,6 +18,12 @@
  - Install dependencies `pip install -r requirements.txt`
  - Run the server `python python -m src.__main__`
 
+### Run tests without docker
+ - Create virtual env `virtualenv -p $(which python3) venv`
+ - Enable the venv `source venv/bin/activate`
+ - Install dependencies `pip install -r requirements.txt`
+ - Run pytest `pytest`
+
 ### The app structure
  - The source directory `./src/`
  - The app entrypoint `./src/__main__.py`
