@@ -69,6 +69,7 @@ async def test_currency(app, requested: str, expected: dict) -> None:
 
     app.coinbase_client.load_and_cache_currencies_list = mocked_currencies
     for i in range(len(requested)):
+
         async def mocked_resp(*args, **kwargs):
             return expected[i][-1]
 
@@ -80,4 +81,3 @@ async def test_currency(app, requested: str, expected: dict) -> None:
         j = response.json()
         assert response.status_code == expected[i][0]
         assert response.json() == expected[i][1]
-
