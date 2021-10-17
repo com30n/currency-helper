@@ -36,3 +36,6 @@ class SpotPricesModel(BaseModel):
 
 class Currency(BaseModel):
     name: str
+
+class Message(BaseModel):
+    message: str
