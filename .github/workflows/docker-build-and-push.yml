@@ -11,10 +11,14 @@ jobs:
     env:
       LOGIN: ${{ secrets.DOCKER_LOGIN }}
       NAME: ${{ secrets.DOCKER_NAME }}
+      APP_NAME: ${{ secrets.APP_NAME }}
+      APP_NAMESPACE: ${{ secrets.APP_NAMESPACE }}
     steps:
       - name: Set ENV variables
         run: |
           echo "IMAGE=$LOGIN/$NAME" >> $GITHUB_ENV
+          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
+          echo "APP_APP_NAMESPACE=$APP_APP_NAMESPACE" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -42,6 +46,19 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE }}:currency-helper-latest
+
+      - name: Prep helm chart
+        run: |
+          mv ./.helm/Chart.yaml ./.helm/Chart.old.yaml &&
+          cat ./.helm/Chart.old.yaml | grep -v appVersion > ./.helm/Chart.yaml &&
+          echo -e "\r\nappVersion: v${GITHUB_REF##*/}\r\n" >> ./.helm/Chart.yaml &&
+          cat ./.helm/Chart.yaml
+
+      - name: Helm deploy
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm upgrade ${{ env.APP_NAME }} ./.helm/ --install --wait --atomic --namespace=${{ env.APP_NAMESPACE }} --set=app.name=${{ env.APP_NAME }} --values=./.helm/values.yaml --set=app.image.repository=${{ env.IMAGE }} --set=app.image.tag=currency-helper-latest pytest
+          kubeconfig: '${{ secrets.KUBECONFIG }}'
 
       - name: Workflow results notification
         if: always()
