@@ -31,20 +31,11 @@ jobs:
           username: ${{ secrets.DOCKER_LOGIN }}
           password: ${{ secrets.DOCKER_PWD }}
 
-      - name: Build Docker container
+      - name: Build and push docker container
         uses: docker/build-push-action@v2
         with:
           cache-from: type=registry,ref=${{ env.IMAGE }}:currency-helper-cache
           cache-to: type=registry,ref=${{ env.IMAGE }}:currency-helper-cache
-          tags: |
-            ${{ env.IMAGE }}:currency-helper-latest
-
-      - name: Run tests
-        run: docker run -i --rm ${{ env.IMAGE }}:currency-helper-latest pytest
-
-      - name: Push Docker
-        uses: docker/build-push-action@v2
-        with:
           push: true
           tags: |
             ${{ env.IMAGE }}:currency-helper-latest
