@@ -27,12 +27,30 @@ jobs:
           username: ${{ secrets.DOCKER_LOGIN }}
           password: ${{ secrets.DOCKER_PWD }}
 
-      - name: Push to Docker Hub
+      - name: Build Docker container
+        uses: docker/build-push-action@v2
+        with:
+          tags: |
+            ${{ env.IMAGE }}:currency-helper-latest
+
+      - name: Run tests
+        run: docker run -i --rm ${{ env.IMAGE }}:currency-helper-latest pytest
+
+      - name: Push Docker
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: |
             ${{ env.IMAGE }}:currency-helper-latest
 
-      - name: Run tests
-        run: docker run -i --rm ${{ env.IMAGE }}:currency-helper-latest pytest
+      - name: Workflow results notification
+        if: always()
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notification_title: '{workflow} has {status_message}'
+          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+          footer: 'Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>'
+          notify_when: 'failure'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
