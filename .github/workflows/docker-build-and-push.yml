@@ -40,28 +40,28 @@ jobs:
           tags: |
             ${{ env.IMAGE }}:currency-helper-latest
 
-      - uses: actions/checkout@v1
-      - name: Prep helm chart
-        run: |
-          mv ./.helm/Chart.yaml ./.helm/Chart.old.yaml &&
-          cat ./.helm/Chart.old.yaml | grep -v appVersion > ./.helm/Chart.yaml &&
-          echo -e "\r\nappVersion: v${GITHUB_REF##*/}\r\n" >> ./.helm/Chart.yaml &&
-          cat ./.helm/Chart.yaml
+#      - uses: actions/checkout@v1
+#      - name: Prep helm chart
+#        run: |
+#          mv ./.helm/Chart.yaml ./.helm/Chart.old.yaml &&
+#          cat ./.helm/Chart.old.yaml | grep -v appVersion > ./.helm/Chart.yaml &&
+#          echo -e "\r\nappVersion: v${GITHUB_REF##*/}\r\n" >> ./.helm/Chart.yaml &&
+#          cat ./.helm/Chart.yaml
 
-      - name: Helm deploy
-        uses: WyriHaximus/github-action-helm3@v2
-        with:
-          exec: helm upgrade ${{ env.APP_NAME }} ./.helm/ --install --wait --atomic --namespace=${{ env.APP_NAMESPACE }} --set=app.name=${{ env.APP_NAME }} --values=./.helm/values.yaml --set=app.image.repository=${{ env.IMAGE }} --set=app.image.tag=currency-helper-latest pytest
-          kubeconfig: '${{ secrets.KUBECONFIG }}'
+#      - name: Helm deploy
+#        uses: WyriHaximus/github-action-helm3@v2
+#        with:
+#          exec: helm upgrade ${{ env.APP_NAME }} ./.helm/ --install --wait --atomic --namespace=${{ env.APP_NAMESPACE }} --set=app.name=${{ env.APP_NAME }} --values=./.helm/values.yaml --set=app.image.repository=${{ env.IMAGE }} --set=app.image.tag=currency-helper-latest pytest
+#          kubeconfig: '${{ secrets.KUBECONFIG }}'
 
-      - name: Workflow results notification
-        if: always()
-        uses: ravsamhq/notify-slack-action@v1
-        with:
-          status: ${{ job.status }}
-          notification_title: '{workflow} has {status_message}'
-          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
-          footer: 'Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>'
-          notify_when: 'failure'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#       - name: Workflow results notification
+#         if: always()
+#         uses: ravsamhq/notify-slack-action@v1
+#         with:
+#           status: ${{ job.status }}
+#           notification_title: '{workflow} has {status_message}'
+#           message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+#           footer: 'Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>'
+#           notify_when: 'failure'
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
