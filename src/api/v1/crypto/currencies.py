@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get(
     "/currencies", response_model=CurrenciesModel, responses={500: {"model": Message}}
 )
-async def get_currency(
+async def get_currencies(
     request: Request,
 ) -> Union[CurrenciesModel, JSONResponse]:
     try:
