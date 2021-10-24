@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from . import currencies, spot
+from .crypto import currencies, spot
 
 router = APIRouter()
 router.include_router(currencies.router, tags=["currencies"])
