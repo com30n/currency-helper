@@ -16,7 +16,7 @@
  - Create virtual env `virtualenv -p $(which python3) venv`
  - Enable the venv `source venv/bin/activate`
  - Install dependencies `pip install -r requirements.txt`
- - Run the server `python python -m src.__main__`
+ - Run the server `python -m src.__main__`
 
 ### Run tests without docker
  - Create virtual env `virtualenv -p $(which python3) venv`
@@ -39,7 +39,9 @@
    docker build -f Dockerfile \
      -t YOUR_DOCKER_REPOSITORY:YOUR_DOCKER_TAG
    ```
- - `docker push YOUR_DOCKER_REPOSITORY:YOUR_DOCKER_TAG`
+ - ```
+    docker push YOUR_DOCKER_REPOSITORY:YOUR_DOCKER_TAG
+   ```
  - ```
    helm install -f .helm/values .helm \
      --set app.image.repository=YOUR_DOCKER_REPOSITORY \
