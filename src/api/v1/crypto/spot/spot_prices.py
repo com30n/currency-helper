@@ -5,19 +5,19 @@ from pydantic import ValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from src.models import Message, SpotPricesModel
+from src.models import Message, CoinbaseSpotPricesModel
 
 router = APIRouter()
 
 
 @router.get(
     "/{currency}",
-    response_model=SpotPricesModel,
+    response_model=CoinbaseSpotPricesModel,
     responses={500: {"model": Message}, 404: {"model": Message}},
 )
 async def get_currency(
     request: Request, currency: str
-) -> Union[SpotPricesModel, JSONResponse]:
+) -> Union[CoinbaseSpotPricesModel, JSONResponse]:
     currency = currency.upper()
     try:
         spot_prices = await request.app.coinbase_client.load_and_cache_spot_price(
