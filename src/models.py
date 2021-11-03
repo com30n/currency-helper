@@ -1,7 +1,6 @@
 from typing import List
 
-from fastapi import HTTPException
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field
 
 from src.utils.model_as_query import as_query
 

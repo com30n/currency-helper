@@ -2,14 +2,16 @@ import ujson
 from starlette.requests import Request
 
 from src.clients.base_client import BaseClient
-from src.models import CurrenciesModel, ConvertCurrencyModel
+from src.models import ConvertCurrencyModel, CurrenciesModel
 
 
 class ExnessClient(BaseClient):
     def __init__(self, config, *args, **kwargs):
         super().__init__(config=config, client_name="exness", *args, **kwargs)
 
-    async def _make_graphql_query(self, operation_name: str, variables: dict, query: str) -> dict:
+    async def _make_graphql_query(
+        self, operation_name: str, variables: dict, query: str
+    ) -> dict:
         params = {
             "operationName": operation_name,
             "variables": variables,
@@ -31,8 +33,9 @@ query GetConversionCurrencies {
         response_model = CurrenciesModel.parse_obj(json["data"]["list"])
         return response_model
 
-    async def convert_currency(self, from_currency: str, to_currency: str, ctx: Request,
-                               amount: float = 1) -> ConvertCurrencyModel:
+    async def convert_currency(
+        self, from_currency: str, to_currency: str, ctx: Request, amount: float = 1
+    ) -> ConvertCurrencyModel:
         query = """
 query GetConversionRates($from: String!, $to: String!) {
   rates: allConversionRates(from: $from, to: $to) {
@@ -47,8 +50,9 @@ query GetConversionRates($from: String!, $to: String!) {
         if cached_answer:
             response_model = ConvertCurrencyModel(**ujson.loads(cached_answer))
         else:
-            json = await self._make_graphql_query("GetConversionRates", {"from": from_currency, "to": to_currency},
-                                                  query)
+            json = await self._make_graphql_query(
+                "GetConversionRates", {"from": from_currency, "to": to_currency}, query
+            )
 
             response_model = ConvertCurrencyModel.parse_obj(json["data"]["rates"][0])
 

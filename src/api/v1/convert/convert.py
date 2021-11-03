@@ -1,11 +1,11 @@
-from typing import Union, List
+from typing import Union
 
 from fastapi import APIRouter, Depends
 from pydantic import ValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from src.models import Message, ConvertCurrencyModel
+from src.models import ConvertCurrencyModel, Message
 
 router = APIRouter()
 
@@ -18,18 +18,17 @@ async def query_params(from_currency: str, to_currency: str, amount: float) -> d
     "/", response_model=ConvertCurrencyModel, responses={500: {"model": Message}}
 )
 async def convert(
-        request: Request,
-        q_params=Depends(query_params)
+        request: Request, q_params=Depends(query_params)
 ) -> Union[ConvertCurrencyModel, JSONResponse]:
     try:
         response = await request.app.exness_client.convert_currency(
             from_currency=q_params["from"],
             to_currency=q_params["to"],
             amount=q_params["amount"],
-            ctx=request
+            ctx=request,
         )
         return response
-    except (ValidationError, TypeError) as e:
+    except (ValidationError, TypeError):
         return JSONResponse(
             status_code=500, content={"message": "Coinbase returns unexpected answer"}
         )

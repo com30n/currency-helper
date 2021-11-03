@@ -13,5 +13,5 @@ def as_query(cls: Type[BaseModel]):
     def as_query_func(request: Request):
         return cls(**request.query_params)
 
-    setattr(cls, 'as_query', as_query_func)
+    setattr(cls, "as_query", as_query_func)
     return cls
