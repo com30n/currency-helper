@@ -17,7 +17,10 @@ cache:
   long_term_ttl: !!env LONG_TERM_CACHE_TTL, 86400
   ttl: !!env CACHE_TTL, 600
 
-coinbase:
-  base_api_url: "https://api.coinbase.com/v2/"
-  currencies_api_path: "currencies"
-  spot_api_path: "prices/spot?currency={currency}"
+clients:
+  coinbase:
+    base_url: "https://api.coinbase.com/v2/"
+    currencies_api_path: "currencies"
+    spot_api_path: "prices/spot?currency={currency}"
+  exness:
+    base_url: "https://pwapi.ex2b.com/"
