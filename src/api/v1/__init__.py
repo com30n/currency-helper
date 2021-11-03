@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 
-from . import convert, crypto, fiat
+from . import convert, currencies
 
 router = APIRouter()
-router.include_router(crypto.router, prefix="/crypto", tags=["crypto"])
-router.include_router(fiat.router, prefix="/fiat", tags=["fiat"])
-router.include_router(convert.router, prefix="/convert", tags=["convert"])
+router.include_router(currencies.router, tags=["currencies"])
+router.include_router(convert.router, tags=["convert"])

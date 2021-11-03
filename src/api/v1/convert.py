@@ -15,7 +15,7 @@ async def query_params(from_currency: str, to_currency: str, amount: float) -> d
 
 
 @router.get(
-    "/", response_model=ConvertCurrencyModel, responses={500: {"model": Message}}
+    "/convert", response_model=ConvertCurrencyModel, responses={500: {"model": Message}}
 )
 async def convert(
         request: Request, q_params=Depends(query_params)

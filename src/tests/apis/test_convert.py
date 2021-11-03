@@ -28,7 +28,7 @@ async def test_convert(app):
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.get(
-            "/api/v1/convert/?from_currency=usd&to_currency=rub&amount=1000"
+            "/api/v1/convert?from_currency=usd&to_currency=rub&amount=1000"
         )
 
     print(response)

@@ -25,7 +25,7 @@ async def test_currencies(app):
     app.exness_client._get_json = mocked_resp
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
-        response = await ac.get("/api/v1/fiat/currencies")
+        response = await ac.get("/api/v1/currencies")
 
     print(response)
     assert response.status_code == 200
