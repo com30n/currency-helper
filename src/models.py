@@ -1,6 +1,9 @@
 from typing import List
 
-from pydantic import BaseModel
+from fastapi import HTTPException
+from pydantic import BaseModel, Field, ValidationError
+
+from src.utils.model_as_query import as_query
 
 
 class CoinbaseCurrencyModel(BaseModel):
@@ -40,3 +43,12 @@ class Message(BaseModel):
 
 class CurrenciesModel(BaseModel):
     currencies: List[str]
+
+
+@as_query
+class ConvertCurrencyModel(BaseModel):
+    from_currency: str = Field(..., alias="from")
+    to_currency: str = Field(..., alias="to")
+    multiplier: float = None
+    amount: float = None
+    rate: float = None
