@@ -11,7 +11,9 @@ router = APIRouter()
 
 
 @router.get(
-    "/currencies", response_model=CoinbaseCurrenciesModel, responses={500: {"model": Message}}
+    "/currencies",
+    response_model=CoinbaseCurrenciesModel,
+    responses={500: {"model": Message}},
 )
 async def get_currencies(
     request: Request,

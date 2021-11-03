@@ -17,7 +17,7 @@ query GetConversionCurrencies {
         params = {
             "operationName": "GetConversionCurrencies",
             "variables": {},
-            "query": query
+            "query": query,
         }
         headers = {"Content-Type": "application/json"}
         json = await self._post_json("/", json=params, headers=headers)

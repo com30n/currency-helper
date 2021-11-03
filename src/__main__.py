@@ -11,7 +11,7 @@ def main() -> None:
         "server:get_app",
         host=config["app"]["host"],
         port=config["app"]["port"],
-        reload=config["app"].get("dev", False)
+        reload=config["app"].get("dev", False),
     )
 
 

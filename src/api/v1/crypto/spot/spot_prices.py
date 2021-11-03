@@ -5,7 +5,7 @@ from pydantic import ValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from src.models import Message, CoinbaseSpotPricesModel
+from src.models import CoinbaseSpotPricesModel, Message
 
 router = APIRouter()
 

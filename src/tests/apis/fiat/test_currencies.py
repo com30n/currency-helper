@@ -122,7 +122,7 @@ MOCK_PROFILE_DICT = {
                 "XPD",
                 "XPT",
                 "ZAR",
-                "ZMW"
+                "ZMW",
             ]
         }
     }
@@ -141,5 +141,5 @@ async def test_currencies(app):
 
     print(response)
     assert response.status_code == 200
-    assert "USD" in response.json()['currencies']
-    assert "RUB" in response.json()['currencies']
+    assert "USD" in response.json()["currencies"]
+    assert "RUB" in response.json()["currencies"]

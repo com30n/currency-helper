@@ -13,8 +13,8 @@ class CoinbaseClient(BaseClient):
         super().__init__(config=config, client_name="coinbase", *args, **kwargs)
 
     async def load_and_cache_currencies_list(
-            self,
-            ctx: Request,
+        self,
+        ctx: Request,
     ) -> CoinbaseCurrenciesModel:
 
         cached_results = await ctx.app.cache.get(key=self.currencies_list_cache_key)
@@ -31,7 +31,7 @@ class CoinbaseClient(BaseClient):
         return currencies_model
 
     async def load_and_cache_spot_price(
-            self, ctx: Request, currency: str = "USD"
+        self, ctx: Request, currency: str = "USD"
     ) -> Optional[CoinbaseSpotPricesModel]:
 
         cached_answer = await ctx.app.cache.get(currency)

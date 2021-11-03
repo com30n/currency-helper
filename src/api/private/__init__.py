@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from . import ping, metrics
+from . import metrics, ping
 
 router = APIRouter()
 
