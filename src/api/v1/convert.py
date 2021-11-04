@@ -18,7 +18,7 @@ async def query_params(from_currency: str, to_currency: str, amount: float) -> d
     "/convert", response_model=ConvertCurrencyModel, responses={500: {"model": Message}}
 )
 async def convert(
-        request: Request, q_params=Depends(query_params)
+    request: Request, q_params=Depends(query_params)
 ) -> Union[ConvertCurrencyModel, JSONResponse]:
     try:
         response = await request.app.exness_client.convert_currency(
