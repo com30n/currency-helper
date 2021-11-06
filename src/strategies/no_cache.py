@@ -20,5 +20,5 @@ def init_cache_client(app, config):
     app.cache = CacheMock.setup()
 
 
-def close_cache_client(app):
+def close_cache_client(app, config):
     app.cache.close()

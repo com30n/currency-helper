@@ -81,4 +81,5 @@ class BaseClient:
         return ujson.loads(resp_txt)
 
     async def close(self):
-        await self.session.close()
+        if self.session:
+            await self.session.close()
