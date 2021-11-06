@@ -1,15 +1,11 @@
-from cashews import cache
+from typing import Any
+
+from fastapi import FastAPI
 
 from . import memory_cache, no_cache, redis_cache
 
 
-class CacheClient:
-    redis_cache: cache = None
-
-    memory_cache: cache = None
-
-
-def setup_cache_client(app, config: dict):
+def setup_cache_client(app: FastAPI, config: dict[str, Any]) -> None:
     cache_config = config.get("cache", {})
     if cache_config.get("redis", {}).get("enabled", None):
         redis_cache.init_cache_client(app=app, config=config)
@@ -20,7 +16,7 @@ def setup_cache_client(app, config: dict):
         no_cache.init_cache_client(app=app, config=config)
 
 
-def close_cache_client(app, config: dict):
+def close_cache_client(app: FastAPI, config: dict[str, Any]) -> None:
     cache_config = config.get("cache", {})
     if cache_config.get("redis", {}).get("enabled", None):
         redis_cache.close_cache_client(app=app, config=config)

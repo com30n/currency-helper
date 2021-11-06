@@ -1,7 +1,9 @@
 import os
-from typing import Optional
+from typing import Any, List, Optional, Type, Union
 
 import yaml
+from yaml import ScalarNode
+from yaml.constructor import BaseConstructor
 from yaml.loader import SafeLoader
 
 """
@@ -15,7 +17,7 @@ class FileNotFound(Exception):
     """no file"""
 
 
-def get_config_path():
+def get_config_path() -> str:
     config_default_search_paths = ["./config.yaml", "./configs/config.yaml"]
     config_path = os.environ.get("CONFIG")
     if not config_path:
@@ -28,7 +30,7 @@ def get_config_path():
     return config_path
 
 
-def load_config(config_path: Optional[str] = None) -> dict:
+def load_config(config_path: Optional[str] = None) -> dict[str, Any]:
     if not config_path:
         config_path = os.getenv("CONFIG")
     if not config_path:
@@ -41,7 +43,7 @@ def load_config(config_path: Optional[str] = None) -> dict:
     return _load_config(config_path)
 
 
-def _load_config(path: str) -> dict:
+def _load_config(path: str) -> dict[str, Union[str, dict[str, str], list[str]]]:
     loader_cls = SafeLoader
     _add_env_constructor(loader_cls)
     try:
@@ -52,14 +54,16 @@ def _load_config(path: str) -> dict:
     return config
 
 
-def _add_env_constructor(loader_cls):
-    def from_env(parts):
+def _add_env_constructor(loader_cls: Type[SafeLoader]) -> None:
+    def from_env(parts: List[str]) -> str:
         if len(parts) == 1:
             return os.environ[parts[0]]
 
-        return os.environ.get(*parts)
+        return os.environ.get(parts[0], parts[1])
 
-    def construct_yaml_env(self, node):
+    def construct_yaml_env(
+        self: BaseConstructor, node: ScalarNode
+    ) -> Optional[dict[str, Union[str, dict[Any, Any], List[Any]]]]:
         scalar = self.construct_scalar(node)
 
         if not scalar:
@@ -68,9 +72,11 @@ def _add_env_constructor(loader_cls):
                 f'"!!env ENV_VARIABLE, DEFAULT_VAL_OPTIONAL"'
             )
 
-        parts = [x.strip() for x in scalar.split(",", maxsplit=1)]
-        value = from_env(parts)
-
+        if isinstance(scalar, str):
+            parts = [x.strip() for x in scalar.split(",", maxsplit=1)]
+            value = from_env(parts)
+        else:
+            return None
         return yaml.load(value, Loader=loader_cls)
 
     loader_cls.add_constructor("tag:yaml.org,2002:env", construct_yaml_env)

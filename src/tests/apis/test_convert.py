@@ -1,3 +1,5 @@
+from typing import Any, Callable, Optional
+
 import pytest
 from httpx import AsyncClient
 
@@ -20,11 +22,11 @@ MOCK_PROFILE_DICT = {
 
 
 @pytest.mark.asyncio
-async def test_convert(app):
-    async def mocked_resp(*args, **kwargs):
+async def test_convert(app: Optional[Callable[..., Any]]) -> None:
+    async def mocked_resp(*args: Any, **kwargs: Any) -> dict[Any, Any]:
         return MOCK_PROFILE_DICT
 
-    app.exness_client._make_graphql_query = mocked_resp
+    app.state.exness_client._make_graphql_query = mocked_resp
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.get(

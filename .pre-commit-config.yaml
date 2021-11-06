@@ -3,19 +3,31 @@ repos:
       hooks:
         - id: black
           name: black
-          entry: black .
+          entry: black src/
           language: system
           always_run: true
           pass_filenames: false
         - id: isort
           name: isort
-          entry: isort .
+          entry: isort src/
           language: system
           always_run: true
           pass_filenames: false
         - id: flake8
           name: flake8
-          entry: flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          entry: flake8 src/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
           language: system
           always_run: true
           pass_filenames: false
+#        - id: autoflake
+#          name: autoflake
+#          entry: autoflake -r -i --remove-all-unused-imports --ignore-init-module-imports src/
+#          language: system
+#          always_run: true
+#          pass_filenames: false
+#        - id: mypy
+#          name: mypy
+#          entry: mypy src/
+#          language: system
+#          always_run: true
+#          pass_filenames: false

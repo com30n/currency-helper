@@ -17,7 +17,7 @@ async def get_currencies(
     request: Request,
 ) -> Union[CurrenciesModel, JSONResponse]:
     try:
-        return await request.app.exness_client.get_currencies_list(ctx=request)
+        return await request.app.state.exness_client.get_currencies_list(ctx=request)
     except (ValidationError, TypeError):
         return JSONResponse(
             status_code=500, content={"message": "Coinbase returns unexpected answer"}

@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Any, Union
 
 from fastapi import APIRouter, Depends
 from pydantic import ValidationError
@@ -10,7 +10,9 @@ from src.models import ConvertCurrencyModel, Message
 router = APIRouter()
 
 
-async def query_params(from_currency: str, to_currency: str, amount: float) -> dict:
+async def query_params(
+    from_currency: str, to_currency: str, amount: float
+) -> dict[str, Union[str, float]]:
     return {"from": from_currency, "to": to_currency, "amount": amount}
 
 
@@ -18,10 +20,10 @@ async def query_params(from_currency: str, to_currency: str, amount: float) -> d
     "/convert", response_model=ConvertCurrencyModel, responses={500: {"model": Message}}
 )
 async def convert(
-    request: Request, q_params=Depends(query_params)
+    request: Request, q_params: Any = Depends(query_params)
 ) -> Union[ConvertCurrencyModel, JSONResponse]:
     try:
-        response = await request.app.exness_client.convert_currency(
+        response = await request.app.state.exness_client.convert_currency(
             from_currency=q_params["from"],
             to_currency=q_params["to"],
             amount=q_params["amount"],

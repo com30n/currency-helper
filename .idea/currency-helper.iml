@@ -12,5 +12,6 @@
   </component>
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="$MODULE_DIR$/requirements.txt" />
+    <option name="modifyBaseFiles" value="true" />
   </component>
 </module>

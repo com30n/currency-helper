@@ -1,3 +1,5 @@
+from typing import Any
+
 import ujson
 from starlette.requests import Request
 
@@ -6,12 +8,14 @@ from src.models import ConvertCurrencyModel, CurrenciesModel
 
 
 class ExnessClient(BaseClient):
-    def __init__(self, config, *args, **kwargs):
-        super().__init__(config=config, client_name="exness", *args, **kwargs)
+    def __init__(self, config: dict[str, Any], *args: Any, **kwargs: Any) -> None:
+        kwargs["config"] = config
+        kwargs["client_name"] = "exness"
+        super().__init__(*args, **kwargs)
 
     async def _make_graphql_query(
-        self, operation_name: str, variables: dict, query: str
-    ) -> dict:
+        self, operation_name: str, variables: dict[str, Any], query: str
+    ) -> dict[str, Any]:
         params = {
             "operationName": operation_name,
             "variables": variables,
@@ -21,7 +25,7 @@ class ExnessClient(BaseClient):
         headers = {"Content-Type": "application/json"}
         return await self._post_json("/", json=params, headers=headers)
 
-    async def get_currencies_list(self, *args, **kwargs) -> CurrenciesModel:
+    async def get_currencies_list(self, *args: Any, **kwargs: Any) -> CurrenciesModel:
         query = """
 query GetConversionCurrencies {
   list: conversionMetadata {
@@ -46,7 +50,7 @@ query GetConversionRates($from: String!, $to: String!) {
   }
 }
 """
-        cached_answer = await ctx.app.cache.get(f"{from_currency}->{to_currency}")
+        cached_answer = await ctx.app.state.cache.get(f"{from_currency}->{to_currency}")
         if cached_answer:
             response_model = ConvertCurrencyModel(**ujson.loads(cached_answer))
         else:
@@ -56,10 +60,10 @@ query GetConversionRates($from: String!, $to: String!) {
 
             response_model = ConvertCurrencyModel.parse_obj(json["data"]["rates"][0])
 
-            await ctx.app.cache.set(
+            await ctx.app.state.cache.set(
                 key=f"{from_currency}->{to_currency}",
                 value=ujson.dumps(response_model.dict(by_alias=True)),
-                expire=ctx.app.config["cache"]["ttl"],
+                expire=ctx.app.state.config["cache"]["ttl"],
             )
         response_model.amount = amount
         response_model.rate = response_model.amount * response_model.multiplier

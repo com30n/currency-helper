@@ -1,4 +1,7 @@
+from typing import Any, AsyncGenerator, Callable, Optional, Union
+
 import pytest
+from fastapi import FastAPI
 from httpx import AsyncClient
 
 from src.tests.fixtures import app
@@ -18,11 +21,11 @@ MOCK_PROFILE_DICT = {
 
 
 @pytest.mark.asyncio
-async def test_currencies(app):
-    async def mocked_resp(*args, **kwargs):
+async def test_currencies(app: Optional[Callable[..., Any]]) -> None:
+    async def mocked_resp(*args: Any, **kwargs: Any) -> dict[Any, Any]:
         return MOCK_PROFILE_DICT
 
-    app.exness_client._get_json = mocked_resp
+    app.state.exness_client._get_json = mocked_resp
 
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.get("/api/v1/currencies")
