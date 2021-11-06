@@ -27,11 +27,11 @@ async def close_exness_client(app: FastAPI, config: dict[str, Any]) -> None:
 
 
 def _on_event(
-    func_list: List[Union[Callable[..., None], Coroutine[..., None]]],
+    func_list: List[Callable[..., None]],
     app: FastAPI,
     config: dict[str, Any],
 ) -> List[Callable[[None], None]]:
-    return [partial(func, app=app, config=config) for func in func_list]  # type: ignore
+    return [partial(func, app=app, config=config) for func in func_list]
 
 
 def on_startup(app: FastAPI, config: dict[str, Any]) -> List[Callable[[None], None]]:
@@ -44,7 +44,7 @@ def on_startup(app: FastAPI, config: dict[str, Any]) -> List[Callable[[None], No
 
 def on_shutdown(app: FastAPI, config: dict[str, Any]) -> List[Callable[[None], None]]:
     return _on_event(
-        func_list=[close_cache_client, close_config, close_exness_client],
+        func_list=[close_cache_client, close_config, close_exness_client],  # type: ignore
         app=app,
         config=config,
     )
