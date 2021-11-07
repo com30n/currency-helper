@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Any, Callable, Coroutine, List, Union
+from typing import Any, Callable, List
 
 from fastapi import FastAPI
 from starlette_prometheus import PrometheusMiddleware

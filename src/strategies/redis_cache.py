@@ -1,4 +1,4 @@
-from typing import Any, Type
+from typing import Any
 
 from cashews import cache
 from fastapi import FastAPI

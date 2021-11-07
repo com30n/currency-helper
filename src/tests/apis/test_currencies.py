@@ -1,7 +1,6 @@
-from typing import Any, AsyncGenerator, Callable, Optional, Union
+from typing import Any, Callable, Optional
 
 import pytest
-from fastapi import FastAPI
 from httpx import AsyncClient
 
 from src.tests.fixtures import app

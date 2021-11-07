@@ -8,9 +8,10 @@ def main() -> None:
     config = load_config(config_path)
 
     run(
-        "server:get_app",
+        "src.server:get_app",
         host=config["app"]["host"],
         port=config["app"]["port"],
+        workers=config["app"]["workers"],
         reload=config["app"].get("dev", False),
     )
 

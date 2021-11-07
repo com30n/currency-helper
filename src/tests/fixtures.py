@@ -1,8 +1,7 @@
 import os
-from typing import Any, AsyncGenerator, Callable, Optional, Union
+from typing import Any, AsyncGenerator, Optional
 
 import pytest
-from fastapi import FastAPI
 
 from src.server import get_app
 
