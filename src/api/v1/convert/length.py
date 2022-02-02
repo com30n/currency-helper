@@ -17,7 +17,7 @@ async def query_params(
 
 
 @router.get(
-    "/convert", response_model=ConvertCurrencyModel, responses={500: {"model": Message}}
+    "/length", response_model=ConvertCurrencyModel, responses={500: {"model": Message}}
 )
 async def convert(
     request: Request, q_params: Any = Depends(query_params)

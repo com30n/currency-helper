@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from . import convert, currencies
+from . import convert, get
 
 router = APIRouter()
-router.include_router(currencies.router, tags=["currencies"])
-router.include_router(convert.router, tags=["convert"])
+router.include_router(get.router, prefix="/get", tags=["currencies"])
+router.include_router(convert.router, prefix="/convert", tags=["convert"])
